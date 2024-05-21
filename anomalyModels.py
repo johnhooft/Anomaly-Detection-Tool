@@ -3,8 +3,6 @@ from sklearn.covariance import EllipticEnvelope
 from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import NearestNeighbors, LocalOutlierFactor
 from sklearn.svm import OneClassSVM
-from sklearn.metrics import silhouette_score
-from tslearn.clustering import TimeSeriesKMeans
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 import math
@@ -173,24 +171,6 @@ def knn(data, k):
     contamination = len(anomaly_indices) / len(data)
     return anomaly_indices, contamination
 
-def kmean2d(values, timestamps, n_clusters):
-    X = np.column_stack((timestamps, values))
-    timeserieskmeans = TimeSeriesKMeans(n_clusters=n_clusters).fit(X)
-    distances = timeserieskmeans.transform(X)
-    
-    cluster_distance = []
-    for i in range(len(distances)):
-        cluster_label = timeserieskmeans.labels_[i]
-        cluster_distance.append(distances[i][cluster_label])
-    
-    median = np.median(cluster_distance)
-    std = np.std(cluster_distance)
-    threshold = median + std
-    anomaly_indices = np.where(cluster_distance > threshold)[0]
-    cluster_labels_array = np.array(timeserieskmeans.labels_)
-    contamination = len(anomaly_indices) / len(values)
-    return cluster_labels_array, anomaly_indices, contamination
-
 def iso(data, con):
     anomalies = IsolationForest(contamination=con).fit_predict(data)
     anomaly_indices = np.where(anomalies == -1)[0]
@@ -216,37 +196,3 @@ def knnAveraged(values, timestamps):
     anomaly_index_high = np.where(np.array(values) > threshold)[0]
     anomaly_index_low = np.where(np.array(values) < threshold)[0]
     return avg, anomaly_index_high, anomaly_index_low, threshold
-
-def calculate_WSS(values, timestamps, graph):
-    X = np.array(values).reshape(-1, 1)
-    # Initialize lists to store silhouette scores and average silhouette scores
-    silhouette_scores = []
-    n_clusters_range = range(2, 20)
-
-    # Perform Time Series K-Means clustering for different numbers of clusters
-    for n_clusters in n_clusters_range:
-        model = TimeSeriesKMeans(n_clusters=n_clusters)
-        y_pred = model.fit_predict(X)
-
-        # Calculate the silhouette score for the current number of clusters
-        silhouette = silhouette_score(X, y_pred)
-        silhouette_scores.append(silhouette)
-
-    # Find the best number of clusters based on the highest silhouette score
-    best_n_clusters = np.argmax(silhouette_scores) + 2  # Adding 2 to convert
-    print("Best number of cluster: " + str(best_n_clusters) + "\n")
-    print("Max score = ", max(silhouette_scores))
-    max_ss = max(silhouette_scores)
-    # Plot the silhouette scores
-    if graph == True:
-        plt.figure(figsize=(10, 5))
-        plt.plot(n_clusters_range, silhouette_scores, marker='o', linestyle='-')
-        plt.xlabel('Number of Clusters')
-        plt.ylabel('Silhouette Score')
-        plt.title('Silhouette Score for Different Numbers of Clusters')
-        plt.grid(True)
-
-        # Show the plots
-        plt.show()
-
-    return best_n_clusters, max_ss

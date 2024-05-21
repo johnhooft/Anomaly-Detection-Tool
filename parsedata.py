@@ -9,11 +9,6 @@ import base64
 import csv
 from io import StringIO
 
-def gendata():
-    timestamps = [i for i in range(100)]
-    values = [i*10 for i in range(100)]
-    return timestamps, values
-
 def convert_to_df(timestamps, values):
     data = np.array([timestamps, values])
     print(data)
@@ -139,25 +134,3 @@ def format_csv(filepath):
         writer = csv.writer(csvfile)
         writer.writerow(['timestamp', 'value'])
         writer.writerows(new_rows)
-
-
-if __name__ == "__main__":
-    # For testing purposes
-
-    #format_csv("/Users/johnhoofttoomey/OHAZ/Nagios_data/Dash/SPF1RXandTX Rates.csv")
-    parse_binary_csv("/Users/johnhoofttoomey/OHAZ/Nagios_data/Dash/useruploads/SPF1_PLC_RX.csv")
-    #parse_xml_data("bendodot_router", "/Users/johnhoofttoomey/OHAZ/Nagios_data/data/")
-    """
-    timestamps, values = gendata()
-    x_test, y_test, x_train, y_train = split_data(timestamps, values)
-    print(x_test, y_test)
-    print('\n')
-    print(x_train, y_train)
-    print('\n')
-    print('\n')
-    test_df = convert_to_df(x_test, y_test)
-    train_df = convert_to_df(x_train, y_train)
-    print(test_df)
-    print('\n')
-    print(train_df)
-    """

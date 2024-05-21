@@ -37,7 +37,6 @@ navbar = html.Div(
             dcc.Link('Home', href='/', style={'background-color': 'gray', 'color': 'black', 'padding': '5px 10px', 'margin': '5px 10px', 'border-radius': '5px', 'font-size': '120%', 'transform': 'scale(1.2)', 'text-decoration': 'none'}),
             dcc.Link('Time Series Anomaly Tool', href='/tsat', style={'background-color': 'gray', 'color': 'black', 'padding': '5px 10px', 'margin': '5px 30px', 'border-radius': '5px', 'font-size': '120%', 'transform': 'scale(1.2)', 'text-decoration': 'none'}),
             dcc.Link('Anomaly Detection Testing Menu', href='/adm', style={'background-color': 'gray', 'color': 'black', 'padding': '5px 10px', 'margin': '5px 30px', 'border-radius': '5px', 'font-size': '120%', 'transform': 'scale(1.2)', 'text-decoration': 'none'}),
-            #dcc.Link('LSTM Menu', href='/lstm', style={'background-color': 'gray', 'color': 'black', 'padding': '5px 10px', 'margin': '5px 20px', 'border-radius': '5px', 'font-size': '120%', 'transform': 'scale(1.2)', 'text-decoration': 'none'}),
             dcc.Link('About', href='/about', style={'background-color': 'gray', 'color': 'black', 'padding': '5px 10px', 'margin': '5px 20px', 'border-radius': '5px', 'font-size': '120%', 'transform': 'scale(1.2)', 'text-decoration': 'none'}),
         ], style={'display': 'flex', 'flex-direction': 'row'}),
         html.Br(),

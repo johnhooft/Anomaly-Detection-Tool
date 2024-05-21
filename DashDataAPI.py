@@ -4,20 +4,17 @@ import numpy as np
 import os
 import math
 import pandas as pd
-from tsfresh import extract_features
 
 UPLOAD_DIRECTORY = "/useruploads"
 path = '/Users/johnhoofttoomey/OHAZ/Nagios_Data/data/' # Put your path to data here
 data = ["bendodot_router", "bendodot_router_training", "wagontire_router7_rx", "wagontire_router7_tx",
         "wagontire_router4_rx", "wagontire_router4_tx", "bryant_edge_rx", "bryant_edge_tx", "blue_edge_rtt", 
         "bryant_hog_radio_rtt", "bryant_edge_rv55_rtt"]
-units = ["rtt", "throughput", "rx", "tx"]
 
 
 def main(algorithm, dataset, data):
     contamination = 0
     file = data[dataset-1]
-
 
     timestamps, values, t, v = parsedata.parse_xml_data(file, path)
     datastack = np.column_stack((timestamps, values))
@@ -52,11 +49,6 @@ def main(algorithm, dataset, data):
         anomaly_indices, contamination = model.knn(datastack, k)
         print("\nCONTAMINATION = ", contamination)
         
-    elif algorithm == 'kmean':
-        n_clusters, ssc = model.calculate_WSS(values, timestamps, graph=False)
-        labels, anomaly_indices, contamination = model.kmean2d(values, timestamps, n_clusters)
-        print("\nCONTAMINATION = ", contamination)
-        
     elif algorithm == "iso":
         con = model.calculate_contamination(values, timestamps)
         anomaly_indices = model.iso(datastack, con)
@@ -66,27 +58,6 @@ def main(algorithm, dataset, data):
         con = model.calculate_contamination(values, timestamps)
         anomaly_indices = model.elip_env(datastack, contamination=con)
         print("\nCONTAMINATION = ", con)
-        
-    elif algorithm == 'clustervis':
-        model.calculate_WSS(values, timestamps, graph=True)
-
-    elif algorithm == 'extract':
-        k = math.floor(math.sqrt(len(values)))
-        anomaly_indices, contamination = model.knn(values, timestamps, k)
-        print("\nCONTAMINATION KNN = ", contamination)
-
-        n_clusters, ssc = model.calculate_WSS(values, timestamps, graph=False)
-        labels, anomalies, contamination = model.kmean2d(values, timestamps, n_clusters)
-        print("\nCONTAMINATION KMEAN = ", contamination)
-
-        data = pd.DataFrame({'timestamp': timestamps, 'value': values})
-        data['time_series_id'] = 1
-        extracted_features = extract_features(data, column_id='time_series_id', column_sort='timestamp')
-        print(extracted_features["value__skewness"])
-        print(extracted_features["value__sample_entropy"])
-        print(extracted_features["value__benford_correlation"])
-        print(extracted_features["value__standard_deviation"])
-        print(extracted_features["value__variance"])
 
     else:
         ValueError("No algorithm found")
