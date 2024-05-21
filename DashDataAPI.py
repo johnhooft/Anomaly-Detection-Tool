@@ -64,10 +64,8 @@ def main(algorithm, dataset, data):
 
     return t, v, anomaly_indices, contamination
 
-def apiupload(algorithm, filename):
-    path = os.getcwd()
-    filepath = path + UPLOAD_DIRECTORY + "/" + filename
-    filetype = filename.split(".")[1]
+def apiupload(algorithm, filepath):
+    filetype = filepath.split(".")[1]
     if filetype == "xml":
         timestamps, values, t, v = parsedata.parse_binary_xml_data(filepath)
     elif filetype == "csv":
@@ -90,7 +88,7 @@ def apiupload(algorithm, filename):
     df = pd.DataFrame({
         'timestamp': t,
         'value': v,
-        'anomaly_indices': anomaly_indices
+        'anomaly_value': anomaly_indices
     })
 
     metadf = pd.DataFrame({
@@ -127,7 +125,3 @@ def apimain(algorithm, dataset):
     })
 
     return df, metadf
-
-if __name__ == "__main__":
-    #apimain("gen", "bendodot_router")
-    apiupload("multi", "bendodot_router_training.xml")

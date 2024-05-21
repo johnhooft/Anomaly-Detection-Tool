@@ -124,11 +124,11 @@ def update_figure(analyze_clicks, submit_clicks, model, dataset, filename):
 
         if model == 'multi':
             max_anomaly_score = 6  # Define the maximum anomaly score
-            anomaly_confidence = df[df['anomaly_indices'] > 4]['anomaly_indices'] / max_anomaly_score * 100
+            anomaly_confidence = df[df['anomaly_value'] > 4]['anomaly_value'] / max_anomaly_score * 100
 
             scatter_trace = go.Scatter(
-                x=df[df['anomaly_indices'] > 4]['timestamp'],
-                y=df[df['anomaly_indices'] > 4]['value'],
+                x=df[df['anomaly_value'] > 4]['timestamp'],
+                y=df[df['anomaly_value'] > 4]['value'],
                 mode='markers',
                 marker_symbol='circle',
                 marker_size=15,
@@ -152,8 +152,8 @@ def update_figure(analyze_clicks, submit_clicks, model, dataset, filename):
         else:
             figure.add_trace(
                 go.Scatter(
-                    x=df[df['anomaly_indices'] > 0]['timestamp'],
-                    y=df[df['anomaly_indices'] > 0]['value'],
+                    x=df[df['anomaly_value'] > 0]['timestamp'],
+                    y=df[df['anomaly_value'] > 0]['value'],
                     mode='markers',
                     marker_symbol='circle',
                     marker_size=15,
@@ -204,7 +204,10 @@ def update_figure(analyze_clicks, submit_clicks, model, dataset, filename):
             print(f"Analyzing file: {filename}")
             model = model
 
-            dataframe, metadf = apiupload(model, filename)
+            path = os.getcwd()
+            filepath = path + UPLOAD_DIRECTORY + "/" + filename
+            dataframe, metadf = apiupload(model, filepath)
+            print(dataframe)
 
             return gen_figure(dataframe, model, metadf)
 
