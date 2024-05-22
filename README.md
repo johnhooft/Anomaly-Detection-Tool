@@ -9,7 +9,7 @@
 The web dashboard allows the user to easily apply machine learning technqiues to their data, by simplying uploading your data files through the menu system. The data must either be in XML format such as produced by Nagios RRD databases, or the user can convert their data to simple CSV Timestamp, Value format and upload it. The web dashboard allows for model selection and will visualize results.
 
 To start the web dashboard clone this repo to your system, then run:
-    python3 Dashserver.py.
+```python3 Dashserver.py.```
 
 # Framework API:
 This framework can also be utilized through an API. By cloning this repo to your system, you can utilize the api functions defined in DashDataAPI.py, mainly the apiupload function. 
