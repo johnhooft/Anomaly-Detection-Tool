@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import math
 from snorkel.labeling.model import LabelModel
 from snorkel.labeling import LFAnalysis
-import pandas as pd
 from kneed import KneeLocator
 
 def conv2(array):

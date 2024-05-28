@@ -1,0 +1,8 @@
+dash==2.16.0
+kneed==0.8.5
+matplotlib==3.7.1
+numpy==1.24.3
+pandas==2.0.3
+plotly==5.19.0
+scikit_learn==1.2.2
+snorkel==0.9.9

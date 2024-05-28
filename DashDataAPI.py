@@ -1,7 +1,6 @@
 import anomalyModels as model
 import parsedata
 import numpy as np
-import os
 import math
 import pandas as pd
 

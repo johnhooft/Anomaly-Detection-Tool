@@ -2,7 +2,6 @@ import dash
 from dash import Dash, html, dcc
 import os
 import atexit
-import shutil
 
 PORT = 5080
 ADDRESS = '127.0.0.1'
