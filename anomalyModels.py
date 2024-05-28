@@ -4,7 +4,6 @@ from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import NearestNeighbors, LocalOutlierFactor
 from sklearn.svm import OneClassSVM
 from sklearn.cluster import DBSCAN
-import matplotlib.pyplot as plt
 import math
 from snorkel.labeling.model import LabelModel
 from snorkel.labeling import LFAnalysis
@@ -42,15 +41,6 @@ def calculate_eps(values, timestamps, plot=False):
     distances = distances[:,1]
     knee_point = KneeLocator(
         range(len(distances)), distances, curve='convex')
-    
-    if plot:
-        plt.figure(figsize=(20,10))
-        plt.plot(distances)
-        plt.axvline(knee_point.knee, color='blue')
-        plt.title('K-distance Graph',fontsize=20)
-        plt.xlabel('Data Points sorted by distance',fontsize=14)
-        plt.ylabel('Epsilon',fontsize=14)
-        plt.show()
 
     return knee_point.knee_y
 
