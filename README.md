@@ -3,6 +3,10 @@
 
  Anomaly Detection Tool (ADT) framework utilizes 6 light weight ML algorithms in a 2 pass technique to generate weak labeled data sets and detect anomalies.
 
+# Setup Instructions:
+- Clone Repo: ```git clone https://github.com/johnhooft/Anomaly-Detection-Tool.git```
+- Download Dependencies: ```pip install -r requirements.txt```
+
 # There are two ways to utilize this framework:
 
 ## Web Dashboard:
