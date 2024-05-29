@@ -84,30 +84,22 @@ def generate_label_matrix(values, timestamps):
     return L
 
 def snorkleModel(values, timestamps, file):
-
     L = generate_label_matrix(values, timestamps)
-
     print("Conflict / Coverage / Overlap: ")
     print(LFAnalysis(L).label_coverage())
-
     # Train LabelModel
     label_model = LabelModel(cardinality=2, verbose=True)
     label_model.fit(L, n_epochs=1000, lr=0.001, l2=0.01, log_freq=100, seed=123, optimizer = 'adam')
     y_preds, prob = label_model.predict(L, return_probs=True)
-
     anomaly_indeces = conv2(y_preds)
-
-    print(anomaly_indeces)
-
+    #print(anomaly_indeces)
     return anomaly_indeces
 
 def multi(values, timestamps, file):
     datastack = np.column_stack((timestamps, values))
     k = math.floor(math.sqrt(len(values)))
     n_clusters = None
-    #n_clusters, ss = calculate_WSS(values, timestamps, graph=False)
     knn_anomaly, knn_con = knn(datastack, k)
-    #_, kmean_anomaly, kmean_con = kmean2d(values, timestamps, n_clusters)
     eps = calculate_eps(values, timestamps)
     dbscan_anomaly, dbscan_con = dbscan(datastack, eps, min_samples=3)
     con = (knn_con + dbscan_con) / 2
@@ -163,25 +155,10 @@ def knn(data, k):
 def iso(data, con):
     anomalies = IsolationForest(contamination=con).fit_predict(data)
     anomaly_indices = np.where(anomalies == -1)[0]
-
     return anomaly_indices
 
 def lof(data, k, con):
-    #lof = LocalOutlierFactor(k, contamination='auto')
     lof = LocalOutlierFactor(k, contamination=con)
     anomaly_scores = lof.fit_predict(data)
     anomaly_indices = np.where(anomaly_scores == -1)[0]
     return anomaly_indices
-
-def knnAveraged(values, timestamps):
-    anomaly_indices = knn(values, timestamps, 4)
-    sum = 0
-    for i in range(len(values)):
-        if i not in anomaly_indices:
-            sum += values[i]
-    avg = sum / (len(values) - len(anomaly_indices))
-    std_deviation = np.std(np.array(values))
-    threshold = avg+std_deviation*1.5
-    anomaly_index_high = np.where(np.array(values) > threshold)[0]
-    anomaly_index_low = np.where(np.array(values) < threshold)[0]
-    return avg, anomaly_index_high, anomaly_index_low, threshold
