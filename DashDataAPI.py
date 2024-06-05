@@ -116,7 +116,7 @@ def apimain(algorithm, dataset):
     df = pd.DataFrame({
         'timestamp': timestamps,
         'value': values,
-        'anomaly_indices': anomaly_indices
+        'anomaly_value': anomaly_indices
     })
 
     metadf = pd.DataFrame({
