@@ -139,11 +139,8 @@ def one_class_svm(data, nu):
     return anomaly_indices, con
 
 def knn(data, k):
-    # Create and fit the k-NN model
     knn = NearestNeighbors(n_neighbors=k).fit(data)
-    # Compute the distances to the k nearest neighbors
     distances, _ = knn.kneighbors(data)
-    # Calculates anomaly scores based on average distance to its k closest neighbors
     avg_distance = np.mean(distances, axis=1)
     median_avg_distance = np.median(avg_distance)
     std = np.std(avg_distance)

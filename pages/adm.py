@@ -79,17 +79,17 @@ def update_figure(n_clicks, model, dataset):
     if model == 'multi':
         figure.add_trace(
             go.Scatter(
-                x=df[df['anomaly_indices'] > 2]['timestamp'],
-                y=df[df['anomaly_indices'] > 2]['value'],
+                x=df[df['anomaly_value'] > 2]['timestamp'],
+                y=df[df['anomaly_value'] > 2]['value'],
                 mode='markers',
                 marker_symbol='circle',
                 marker_size=15,
                 name='Anomaly',
                 #hoverinfo='all',
                 hoverinfo='text+x+y',  # Add 'text' to include custom hover text
-                text=df[df['anomaly_indices'] > 2]['anomaly_indices'].astype(str),  # Specify the text to be displayed on hover
+                text=df[df['anomaly_value'] > 2]['anomaly_value'].astype(str),  # Specify the text to be displayed on hover
                 marker=dict(
-                    color=df[df['anomaly_indices'] > 2]['anomaly_indices'],
+                    color=df[df['anomaly_value'] > 2]['anomaly_value'],
                     colorscale=[[0, 'orange'], [0.5, 'red'], [1, 'black']],
                     showscale=True,
                 )
@@ -99,8 +99,8 @@ def update_figure(n_clicks, model, dataset):
     else:
         figure.add_trace(
             go.Scatter(
-                x=df[df['anomaly_indices'] > 0]['timestamp'],
-                y=df[df['anomaly_indices'] > 0]['value'],
+                x=df[df['anomaly_value'] > 0]['timestamp'],
+                y=df[df['anomaly_value'] > 0]['value'],
                 mode='markers',
                 marker_symbol='circle',
                 marker_size=15,
