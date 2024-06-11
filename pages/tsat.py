@@ -119,7 +119,15 @@ def update_figure(analyze_clicks, submit_clicks, model, dataset, filename):
 
         df = dataframe
 
-        figure = px.line(df, x='timestamp', y='value')
+        # Create the base line plot
+        line_trace = go.Scatter(
+            x=df['timestamp'],
+            y=df['value'],
+            mode='lines',
+            name='Time Series'
+        )
+
+        figure = go.Figure(data=[line_trace])
 
         if model == 'multi':
             max_anomaly_score = 6  # Define the maximum anomaly score
@@ -149,17 +157,17 @@ def update_figure(analyze_clicks, submit_clicks, model, dataset, filename):
                 ))
 
         else:
-            figure.add_trace(
-                go.Scatter(
-                    x=df[df['anomaly_value'] > 0]['timestamp'],
-                    y=df[df['anomaly_value'] > 0]['value'],
-                    mode='markers',
-                    marker_symbol='circle',
-                    marker_size=15,
-                    name='Anomaly',
-                    hoverinfo='all',
-                )
+            scatter_trace = go.Scatter(
+                x=df[df['anomaly_value'] > 0]['timestamp'],
+                y=df[df['anomaly_value'] > 0]['value'],
+                mode='markers',
+                marker_symbol='circle',
+                marker_size=15,
+                name='Anomaly',
+                hoverinfo='all',
             )
+        
+            figure.add_trace(scatter_trace)
         
         figure.update_traces(marker={'size': 8})
 
@@ -187,9 +195,6 @@ def update_figure(analyze_clicks, submit_clicks, model, dataset, filename):
         figure.add_annotation(dict(font=dict(color='Black',size=15),x=0,y=-0.2,showarrow=False,textangle=0,xanchor='left',xref="paper",yref="paper",
                                 text="Meta Data: Contamination Value = " + str(con_val),
         ))
-        #figure.add_annotation(dict(font=dict(color='Black',size=15),x=0,y=-0.3,showarrow=False,textangle=0,xanchor='left',xref="paper",yref="paper",
-        #                        text="F1 Score = ",
-        #))
 
         return figure
 
